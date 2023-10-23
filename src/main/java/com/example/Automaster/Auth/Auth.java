@@ -2,6 +2,8 @@ package com.example.Automaster.Auth;
 
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 /**
  * @author alan
  */
