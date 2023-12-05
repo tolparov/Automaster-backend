@@ -3,25 +3,18 @@ version: '3.5'
 services:
   automaster_postgres:
     container_name: automaster_postgres
-    image: postgres:15
+    image: postgres
     environment:
+      POSTGRES_DB: automaster
       POSTGRES_USER: automaster
       POSTGRES_PASSWORD: 1234
       PGDATA: /data/postgres
+      POSTGRES_INITDB_ARGS: "-A md5"
     ports:
-      - 5432:5432
+      - "54321:5432"
     volumes:
-      - postgres:/var/lib/postgres
-    restart: unless-stopped
-
-  automaster:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8080:8080
+      - postgres:/data/postgres
+    restart: always
 
 volumes:
   postgres:
-
-#
