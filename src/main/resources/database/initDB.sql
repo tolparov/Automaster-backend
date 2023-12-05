@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS "UserData"
-(
-    id    BIGSERIAL PRIMARY KEY ,
-    login  VARCHAR(10) NOT NULL ,
-    email VARCHAR(254) NOT NULL ,
-    password VARCHAR(20)  NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS "UserData"
+-- (
+--     id    BIGSERIAL PRIMARY KEY ,
+--     login  VARCHAR(10) NOT NULL ,
+--     email VARCHAR(254) NOT NULL ,
+--     password VARCHAR(20)  NOT NULL
+-- );

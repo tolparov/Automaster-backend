@@ -1,37 +1,38 @@
 package com.example.Automaster.service;
-import com.example.Automaster.Auth.Auth;
+import com.example.Automaster.entity.UserEntity;
 
 
+import com.example.Automaster.exception.UserAlreadyExist;
+import com.example.Automaster.exception.UserNotFoundExist;
+import com.example.Automaster.model.UserToModel;
 import com.example.Automaster.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class AuthService {
 
-    private final AuthRepository authRepository;
-
     @Autowired
-    public AuthService(AuthRepository authRepository) {
-        this.authRepository = authRepository;
+    private AuthRepository authRepository;
+
+    public UserEntity register(UserEntity user) throws UserAlreadyExist {
+        if (authRepository.findByLogin(user.getLogin()) != null) {
+            throw new UserAlreadyExist("Пользователь с таким логином уже существует");
+        }
+        return authRepository.save(user);
     }
 
-    public Auth saveAuth(Auth auth) {
-        return authRepository.save(auth);
+    public UserToModel getOne(Long id) throws UserNotFoundExist {
+        UserEntity user = authRepository.findById(id).get();
+
+        if (user == null) {
+            throw new UserNotFoundExist("Пользователь не был найден");
+        }
+        return UserToModel.toModel(user);
     }
 
-    public List<Auth> getAllAuth() {
-        return authRepository.findAll();
-    }
-
-    public Optional<Auth> getAuthById(Integer id) {
-        return authRepository.findById(id);
-    }
-
-    public void deleteAuth(Integer id) {
+    public Long delete(Long id) {
         authRepository.deleteById(id);
+        return id;
     }
 }
