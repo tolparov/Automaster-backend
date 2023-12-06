@@ -16,11 +16,26 @@ public class AuthService {
     private AuthRepository authRepository;
 
     public UserEntity register(UserEntity user) throws UserAlreadyExist {
+        if (authRepository.findByEmail(user.getEmail()) != null) {
+            throw new UserAlreadyExist("Пользователь с такой почтой уже существует");
+        }
+
         if (authRepository.findByLogin(user.getLogin()) != null) {
             throw new UserAlreadyExist("Пользователь с таким логином уже существует");
         }
         return authRepository.save(user);
     }
+
+    public UserEntity login(UserEntity user) throws UserNotFoundExist {
+        UserEntity existingUser = authRepository.findByLoginAndPassword(user.getLogin(), user.getPassword());
+
+        if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
+            throw new UserNotFoundExist("Неверный логин или пароль");
+        }
+        return existingUser;
+    }
+
+
 
     public UserToModel getOne(Long id) throws UserNotFoundExist {
         UserEntity user = authRepository.findById(id).get();

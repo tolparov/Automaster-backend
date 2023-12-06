@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuthRepository extends JpaRepository<UserEntity, Long> {
+	UserEntity findByLoginAndPassword(String login, String password);
 	UserEntity findByLogin(String login);
+	UserEntity findByEmail(String email);
 }

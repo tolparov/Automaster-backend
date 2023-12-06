@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-    @PostMapping
+    @PostMapping("register")
     public ResponseEntity register(@RequestBody UserEntity user) {
         try {
             authService.register(user);
@@ -26,6 +26,17 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Не удалось сохранить пользователя");
         }
     }
+    @PostMapping("login")
+    public ResponseEntity login(@RequestBody UserEntity user) {
+        try {
+            authService.login(user);
+            return ResponseEntity.ok("Пользователь успешно вошел");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Не удалось выполнить вход");
+        }
+    }
+
+
     @GetMapping
     public ResponseEntity getOneUsers(@RequestParam Long id) {
         try {
@@ -45,8 +56,6 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Произошла ошибка при попытке удалить");
         }
     }
-
-
 
 }
 
