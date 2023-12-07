@@ -4,10 +4,14 @@ import com.example.Automaster.entity.UserEntity;
 
 import com.example.Automaster.exception.UserAlreadyExist;
 import com.example.Automaster.exception.UserNotFoundExist;
+import com.example.Automaster.model.UserResetRequest;
 import com.example.Automaster.model.UserToModel;
 import com.example.Automaster.repository.AuthRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class AuthService {
@@ -33,6 +37,19 @@ public class AuthService {
             throw new UserNotFoundExist("Неверный логин или пароль");
         }
         return existingUser;
+    }
+
+    public UserEntity resetPassword(UserResetRequest userResetRequest) throws UserNotFoundExist, UserAlreadyExist {
+        UserEntity existingUser = authRepository.findByLogin(userResetRequest.getLogin());
+
+        if (existingUser == null) {
+            throw new UserNotFoundExist("Пользователя с таким логином не существует");
+        } else if (Objects.equals(userResetRequest.getPassword(), userResetRequest.getNewPassword())) {
+            throw new UserAlreadyExist("Такой пароль уже использовался");
+        }
+
+        existingUser.setPassword(userResetRequest.getNewPassword());
+        return authRepository.save(existingUser);
     }
 
 
