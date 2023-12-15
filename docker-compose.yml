@@ -1,20 +1,30 @@
-version: '3.5'
+version: '3.8'
 
 services:
-  automaster_postgres:
-    container_name: automaster_postgres
+  db:
     image: postgres
     environment:
       POSTGRES_DB: automaster
       POSTGRES_USER: automaster
       POSTGRES_PASSWORD: 1234
-      PGDATA: /data/postgres
-      POSTGRES_INITDB_ARGS: "-A md5"
+      volumes:
+        db-data:/var/lib/postgresql/data
     ports:
-      - "54321:5432"
-    volumes:
-      - postgres:/data/postgres
+      - 54321:5432
     restart: always
 
+  automaster:
+    image: client
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - SERVER_PORT= 8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/automaster
+
 volumes:
-  postgres:
+  pgdata:
