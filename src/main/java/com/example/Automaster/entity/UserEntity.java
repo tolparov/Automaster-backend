@@ -1,8 +1,9 @@
-package com.example.Automaster.Auth;
+package com.example.Automaster.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.spi.ToolProvider;
 
 /**
  * @author alan
@@ -10,19 +11,20 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "UserData")
-public class Auth {
+public class UserEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "email")
     private String email;
     @Column(name = "login")
     private String login;
     @Column(name = "password")
     private String password;
+    public UserEntity() {
 
-
+    }
     public String getLogin() {
         return login;
     }
@@ -39,11 +41,11 @@ public class Auth {
         this.password = password;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,4 +56,5 @@ public class Auth {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }
