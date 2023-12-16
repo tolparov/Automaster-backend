@@ -15,16 +15,18 @@ public class Product {
     private double price;
     private String description;
 
-    // Другие поля и методы, геттеры и сеттеры
 
     public Product() {
         // Пустой конструктор, необходим для JPA
     }
 
-    public Product(String name, double price, String description) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
+    public Product toProduct() {
+        Product product = new Product();
+        product.setDescription(this.description);
+        product.setName(this.name);
+        product.setPrice(this.price);
+
+        return product;
     }
 
     // Геттеры и сеттеры для всех полей
