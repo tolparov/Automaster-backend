@@ -18,7 +18,12 @@ class HttpRequestTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void greetingShouldReturnDefaultMessage() throws Exception {
+    void TestRegister() throws Exception {
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/" + "register",
+                String.class)).contains("register");
+    }
+    @Test
+    void TestLogin() throws Exception {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/" + "login",
                 String.class)).contains("Please sign in");
     }
